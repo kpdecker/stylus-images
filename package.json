@@ -8,5 +8,8 @@
   "engines": { "node": ">= 0.4" },
   "dependencies": {
     "stylus": "http://static.incaseofstairs.com/stylus.tar.gz"
+  },
+  "scripts": {
+    "test": "expresso test/*"
   }
 }

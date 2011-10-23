@@ -31,7 +31,7 @@ function runTest(test, expected, name, options, assert) {
 exports['inline-non-updated-url'] = function(beforeExit, assert) {
   runTest(
       '.test\n'
-    + '  background-image url("barrowLoRez.png")\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
     + '  display inline-block\n',
 
       '.test {\n'
@@ -46,7 +46,7 @@ exports['inline-non-updated-url'] = function(beforeExit, assert) {
 exports['inline-updated-url'] = function(beforeExit, assert) {
   runTest(
       '.test\n'
-    + '  background-image url("barrowLoRez.png")\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
     + '  display inline-block\n',
 
       '.test {\n'
@@ -62,11 +62,11 @@ exports['inline-updated-url'] = function(beforeExit, assert) {
 exports['external-updated-url'] = function(beforeExit, assert) {
   runTest(
       '.test\n'
-    + '  background-image url("barrowLoRez.png")\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
     + '  display inline-block\n',
 
       '.test {\n'
-    + '  background-image: url("barrowLoRez@2x.png");\n'
+    + '  background-image: url("images/barrowLoRez@2x.png");\n'
     + '  display: inline-block;\n'
     + '}\n',
 

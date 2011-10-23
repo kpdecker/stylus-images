@@ -26,10 +26,10 @@ function runTest(test, expected, name, assert) {
 exports['simple-url'] = function(beforeExit, assert) {
   runTest(
       '.test\n'
-    + '  background-image url("barrowLoRez.png")\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
     + '  display inline-block\n'
     + '.test\n'
-    + '  background-image url("barrowLoRez.png")\n',
+    + '  background-image url("images/barrowLoRez.png")\n',
 
       '.test {\n'
     + '  display: inline-block;\n'
@@ -46,7 +46,7 @@ exports['simple-url'] = function(beforeExit, assert) {
 exports['single-instance'] = function(beforeExit, assert) {
   runTest(
       '.test\n'
-    + '  background-image url("barrowLoRez.png")\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
     + '  display inline-block\n',
 
       '.test {\n'
@@ -61,9 +61,9 @@ exports['single-instance'] = function(beforeExit, assert) {
 exports['different-properties'] = function(beforeExit, assert) {
   runTest(
       '.test\n'
-    + '  background-image url("barrowLoRez.png")\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
     + '.test\n'
-    + '  background url("barrowLoRez.png")\n',
+    + '  background url("images/barrowLoRez.png")\n',
 
       '.test {\n'
     + '  background-image: url("' + LO_REZ_DATA + '");\n'
@@ -80,9 +80,9 @@ exports['conditional-properties'] = function(beforeExit, assert) {
   runTest(
       '.test1\n'
     + '  if true\n'
-    + '    background-image url("barrowLoRez.png")\n'
+    + '    background-image url("images/barrowLoRez.png")\n'
     + '.test2\n'
-    + '  background-image url("barrowLoRez.png")\n',
+    + '  background-image url("images/barrowLoRez.png")\n',
 
       '.test1,\n'
     + '.test2 {\n'
@@ -94,9 +94,9 @@ exports['conditional-properties'] = function(beforeExit, assert) {
   runTest(
       '.test1\n'
     + '  if false\n'
-    + '    background-image url("barrowLoRez.png")\n'
+    + '    background-image url("images/barrowLoRez.png")\n'
     + '.test2\n'
-    + '  background-image url("barrowLoRez.png")\n',
+    + '  background-image url("images/barrowLoRez.png")\n',
 
       '.test2 {\n'
     + '  background-image: url("' + LO_REZ_DATA + '");\n'
@@ -125,9 +125,9 @@ exports['external-url'] = function(beforeExit, assert) {
   runTest(
       '.test1\n'
     + '  if false\n'
-    + '    background-image url("barrowLoRez.png")\n'
+    + '    background-image url("images/barrowLoRez.png")\n'
     + '.test2\n'
-    + '  background-image url("barrowLoRez.png")\n',
+    + '  background-image url("images/barrowLoRez.png")\n',
 
       '.test2 {\n'
     + '  background-image: url("' + LO_REZ_DATA + '");\n'

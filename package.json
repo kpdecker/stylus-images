@@ -1,15 +1,27 @@
 {
   "name": "stylus-images",
   "description": "Enhanced stylus image handling plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "author": "Kevin Decker <kpdecker@gmail.com>",
-  "keywords": ["css", "image", "style", "stylesheets", "stylus"],
-  "repository": "git://github.com/kpdecker/stylus-images",
-  "engines": { "node": ">= 0.4" },
+  "keywords": [
+    "css",
+    "image",
+    "style",
+    "stylesheets",
+    "stylus"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/kpdecker/stylus-images.git"
+  },
+  "engines": {
+    "node": ">= 0.4"
+  },
   "dependencies": {
     "stylus": "http://static.incaseofstairs.com/stylus.tar.gz"
   },
   "scripts": {
     "test": "expresso test/*"
-  }
+  },
+  "devDependencies": {}
 }

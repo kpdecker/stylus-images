@@ -6,6 +6,11 @@ const LO_REZ_DATA = 'data:image/png;base64,'
       + 'qAAAABlBMVEUAAABsbGxp5oJTAAAAAXRSTlMAQObYZg'
       + 'AAACNJREFUCB1jUBBgKLBgqKhgqPnBYP+BQf4BA/8BB'
       + 'vYGBmYGAF9nBsTug883AAAAAElFTkSuQmCC';
+const HI_REZ_DATA = 'data:image/png;base64,'
+      + 'iVBORw0KGgoAAAANSUhEUgAAACcAAAAwAgMAAADvHou'
+      + 'FAAAADFBMVEUAAADu7u7l5uWztLMXvUdxAAAAAXRSTl'
+      + 'MAQObYZgAAABRJREFUKFNjuMAAB6NMDOaDkcYEAJiHK'
+      + 'GF+9t31AAAAAElFTkSuQmCC';
 
 function runTest(test, expected, name, assert) {
   stylus(test)
@@ -134,5 +139,37 @@ exports['external-url'] = function(beforeExit, assert) {
     + '}\n',
 
     "False Conditional",
+    assert);
+};
+
+exports['multiple-combine'] = function(beforeExit, assert) {
+  runTest(
+      '.test\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
+    + '  display inline-block\n'
+    + '.test\n'
+    + '  background-image url("images/barrowLoRez.png")\n'
+    + '.test2\n'
+    + '  background-image url("images/barrowLoRez@2x.png")\n'
+    + '  display inline-block\n'
+    + '.test2\n'
+    + '  background-image url("images/barrowLoRez@2x.png")\n',
+
+      '.test {\n'
+    + '  display: inline-block;\n'
+    + '}\n'
+    + '.test2 {\n'
+    + '  display: inline-block;\n'
+    + '}\n'
+    + '.test,\n'
+    + '.test {\n'
+    + '  background-image: url("' + LO_REZ_DATA + '");\n'
+    + '}\n'
+    + '.test2,\n'
+    + '.test2 {\n'
+    + '  background-image: url("' + HI_REZ_DATA + '");\n'
+    + '}\n',
+
+    "Multiple combine Matches",
     assert);
 };

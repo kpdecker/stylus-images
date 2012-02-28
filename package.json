@@ -1,7 +1,7 @@
 {
   "name": "stylus-images",
   "description": "Enhanced stylus image handling plugin",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "Kevin Decker <kpdecker@gmail.com>",
   "keywords": [
     "css",

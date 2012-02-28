@@ -17,11 +17,11 @@
   "engines": {
     "node": ">= 0.4"
   },
-  "dependencies": {
-    "stylus": "~0.19"
-  },
+  "dependencies": {},
   "scripts": {
     "test": "expresso test/*"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "stylus": "~0.24"
+  }
 }

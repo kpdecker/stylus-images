@@ -12,9 +12,9 @@ const HI_REZ_DATA = 'data:image/png;base64,'
       + 'MAQObYZgAAABRJREFUKFNjuMAAB6NMDOaDkcYEAJiHK'
       + 'GF+9t31AAAAAElFTkSuQmCC';
 
-function runTest(test, expected, name, assert) {
+function runTest(test, expected, name, assert, options) {
   stylus(test)
-    .use(stylusImage())
+    .use(stylusImage(options))
     .include(process.cwd() + '/test')
     .render(function(err, css) {
       // Timeout to prevent multiple errors in response to catch resend
@@ -172,4 +172,34 @@ exports['multiple-combine'] = function(beforeExit, assert) {
 
     "Multiple combine Matches",
     assert);
+};
+
+exports['external-prefix'] = function(beforeExit, assert) {
+  runTest(
+      '.test1\n'
+    + '  background-image url("foo.png")\n'
+    + '.test2\n'
+    + '  background-image url("/foo.png")\n'
+    + '.test3\n'
+    + '  background-image url("//test/foo.png")\n'
+    + '.test4\n'
+    + '  background-image url("http://test/foo.png")\n',
+
+      '.test1 {\n'
+    + '  background-image: url("/prefix/foo.png");\n'
+    + '}\n'
+    + '.test2 {\n'
+    + '  background-image: url("/foo.png");\n'
+    + '}\n'
+    + '.test3 {\n'
+    + '  background-image: url("//test/foo.png");\n'
+    + '}\n'
+    + '.test4 {\n'
+    + '  background-image: url("http://test/foo.png");\n'
+    + '}\n',
+
+    "Load Prefix output",
+    assert, {
+      externalPrefix: '/prefix/'
+    });
 };

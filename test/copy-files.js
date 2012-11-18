@@ -2,7 +2,7 @@ var fs = require('fs'),
     stylus = require('stylus'),
     stylusImage = require('..');
 
-function runTest(test, expected, imagePath, name, options, assert) {
+function runTest(test, expected, imagePath, options, done) {
   stylus(test, options)
     .use(stylusImage(options))
     .include(process.cwd() + '/test')
@@ -13,27 +13,29 @@ function runTest(test, expected, imagePath, name, options, assert) {
           throw err;
         }
 
-        assert.equal(css, expected, name);
-        assert.equal(fs.statSync(imagePath).isFile(), true, imagePath);
+        css.should.eql(expected);
+        fs.statSync(imagePath).isFile().should.be.true;
+        done();
       }, 0);
     });
 }
 
-exports['copy file'] = function(beforeExit, assert) {
-  fs.mkdir('/tmp/stylus-images', 0777);
+describe('copy file', function() {
+  fs.mkdir('/tmp/stylus-images', parseInt('0777', 8));
 
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n',
+  it('copy large files', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n',
 
-      '.test {\n'
-    + '  background-image: url("images/barrowLoRez@2x.png");\n'
-    + '  display: inline-block;\n'
-    + '}\n',
-    '/tmp/stylus-images/images/barrowLoRez@2x.png',
+        '.test {\n'
+      + '  background-image: url("images/barrowLoRez@2x.png");\n'
+      + '  display: inline-block;\n'
+      + '}\n',
+      '/tmp/stylus-images/images/barrowLoRez@2x.png',
 
-    "Updated external url",
-    {res: 2, limit: 100, copyFiles: true, filename: '/tmp/stylus-images/test.css'},
-    assert);
-};
+      {res: 2, limit: 100, copyFiles: true, filename: '/tmp/stylus-images/test.css'},
+      done);
+  });
+});

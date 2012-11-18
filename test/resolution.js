@@ -12,7 +12,7 @@ const HI_REZ_DATA = 'data:image/png;base64,'
       + 'MAQObYZgAAABRJREFUKFNjuMAAB6NMDOaDkcYEAJiHK'
       + 'GF+9t31AAAAAElFTkSuQmCC';
 
-function runTest(test, expected, name, options, assert) {
+function runTest(test, expected, options, done) {
   stylus(test)
     .use(stylusImage(options))
     .include(process.cwd() + '/test')
@@ -23,54 +23,54 @@ function runTest(test, expected, name, options, assert) {
           throw err;
         }
 
-        assert.equal(css, expected, name);
+        css.should.eql(expected);
+        done();
       }, 0);
     });
 }
 
-exports['inline-non-updated-url'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n',
+describe('resolution selector', function() {
+  it('should inline non-updated urls', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n',
 
-      '.test {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '  display: inline-block;\n'
-    + '}\n',
+        '.test {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '  display: inline-block;\n'
+      + '}\n',
 
-    "Non-updated url",
-    {res: 1.5},
-    assert);
-};
-exports['inline-updated-url'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n',
+      {res: 1.5},
+      done);
+  });
+  it('should inline updated urls', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n',
 
-      '.test {\n'
-    + '  background-image: url("' + HI_REZ_DATA + '");\n'
-    + '  display: inline-block;\n'
-    + '}\n',
+        '.test {\n'
+      + '  background-image: url("' + HI_REZ_DATA + '");\n'
+      + '  display: inline-block;\n'
+      + '}\n',
 
-    "Updated inline url",
-    {res: 2},
-    assert);
-};
+      {res: 2},
+      done);
+  });
 
-exports['external-updated-url'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n',
+  it('should update external urls', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n',
 
-      '.test {\n'
-    + '  background-image: url("images/barrowLoRez@2x.png");\n'
-    + '  display: inline-block;\n'
-    + '}\n',
+        '.test {\n'
+      + '  background-image: url("images/barrowLoRez@2x.png");\n'
+      + '  display: inline-block;\n'
+      + '}\n',
 
-    "Updated external url",
-    {res: 2, limit: 100},
-    assert);
-};
+      {res: 2, limit: 100},
+      done);
+  });
+});

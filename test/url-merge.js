@@ -12,9 +12,9 @@ const HI_REZ_DATA = 'data:image/png;base64,'
       + 'MAQObYZgAAABRJREFUKFNjuMAAB6NMDOaDkcYEAJiHK'
       + 'GF+9t31AAAAAElFTkSuQmCC';
 
-function runTest(test, expected, name, assert, options) {
+function runTest(test, expected, done) {
   stylus(test)
-    .use(stylusImage(options))
+    .use(stylusImage({}))
     .include(process.cwd() + '/test')
     .render(function(err, css) {
       // Timeout to prevent multiple errors in response to catch resend
@@ -23,183 +23,138 @@ function runTest(test, expected, name, assert, options) {
           throw err;
         }
 
-        assert.equal(css, expected, name);
+        css.should.eql(expected);
+        done();
       }, 0);
     });
 }
 
-exports['simple-url'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n'
-    + '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n',
+describe('url-merge', function() {
+  it('should merge two inlined images', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n'
+      + '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n',
 
-      '.test {\n'
-    + '  display: inline-block;\n'
-    + '}\n'
-    + '.test,\n'
-    + '.test {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '}\n',
+        '.test {\n'
+      + '  display: inline-block;\n'
+      + '}\n'
+      + '.test,\n'
+      + '.test {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '}\n',
 
-    "Simple URL Matches",
-    assert);
-};
+      done);
+  });
 
-exports['single-instance'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n',
+  exports['single-instance'] = function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n',
 
-      '.test {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '  display: inline-block;\n'
-    + '}\n',
+        '.test {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '  display: inline-block;\n'
+      + '}\n',
 
-    "Simple URL Matches",
-    assert);
-};
+      done);
+  };
 
-exports['different-properties'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '.test\n'
-    + '  background url("images/barrowLoRez.png")\n',
+  it('should not merge different property references', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '.test\n'
+      + '  background url("images/barrowLoRez.png")\n',
 
-      '.test {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '}\n'
-    + '.test {\n'
-    + '  background: url("' + LO_REZ_DATA + '");\n'
-    + '}\n',
+        '.test {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '}\n'
+      + '.test {\n'
+      + '  background: url("' + LO_REZ_DATA + '");\n'
+      + '}\n',
 
-    "Different Properties",
-    assert);
-};
+      done);
+  });
 
-exports['conditional-properties'] = function(beforeExit, assert) {
-  runTest(
-      '.test1\n'
-    + '  if true\n'
-    + '    background-image url("images/barrowLoRez.png")\n'
-    + '.test2\n'
-    + '  background-image url("images/barrowLoRez.png")\n',
+  it('should should merge true contional properties', function(done) {
+    runTest(
+        '.test1\n'
+      + '  if true\n'
+      + '    background-image url("images/barrowLoRez.png")\n'
+      + '.test2\n'
+      + '  background-image url("images/barrowLoRez.png")\n',
 
-      '.test1,\n'
-    + '.test2 {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '}\n',
+        '.test1,\n'
+      + '.test2 {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '}\n',
 
-    "True Conditional",
-    assert);
-  runTest(
-      '.test1\n'
-    + '  if false\n'
-    + '    background-image url("images/barrowLoRez.png")\n'
-    + '.test2\n'
-    + '  background-image url("images/barrowLoRez.png")\n',
+      done);
+  });
+  it('should not merge false conditional properties', function(done) {
+    runTest(
+        '.test1\n'
+      + '  if false\n'
+      + '    background-image url("images/barrowLoRez.png")\n'
+      + '.test2\n'
+      + '  background-image url("images/barrowLoRez.png")\n',
 
-      '.test2 {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '}\n',
+        '.test2 {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '}\n',
 
-    "False Conditional",
-    assert);
-};
+      done);
+  });
 
-exports['external-url'] = function(beforeExit, assert) {
-  runTest(
-      '.test1\n'
-    + '  background-image url("foo.png")\n'
-    + '.test2\n'
-    + '  background-image url("foo.png")\n',
+  it('should not merge external urls', function(done) {
+    runTest(
+        '.test1\n'
+      + '  background-image url("foo.png")\n'
+      + '.test2\n'
+      + '  background-image url("foo.png")\n',
 
-      '.test1 {\n'
-    + '  background-image: url("foo.png");\n'
-    + '}\n'
-    + '.test2 {\n'
-    + '  background-image: url("foo.png");\n'
-    + '}\n',
+        '.test1 {\n'
+      + '  background-image: url("foo.png");\n'
+      + '}\n'
+      + '.test2 {\n'
+      + '  background-image: url("foo.png");\n'
+      + '}\n',
 
-    "True Conditional",
-    assert);
-  runTest(
-      '.test1\n'
-    + '  if false\n'
-    + '    background-image url("images/barrowLoRez.png")\n'
-    + '.test2\n'
-    + '  background-image url("images/barrowLoRez.png")\n',
+      done);
+  });
 
-      '.test2 {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '}\n',
+  it('should handle mutliple merges in the same file', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n'
+      + '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '.test2\n'
+      + '  background-image url("images/barrowLoRez@2x.png")\n'
+      + '  display inline-block\n'
+      + '.test2\n'
+      + '  background-image url("images/barrowLoRez@2x.png")\n',
 
-    "False Conditional",
-    assert);
-};
+        '.test {\n'
+      + '  display: inline-block;\n'
+      + '}\n'
+      + '.test2 {\n'
+      + '  display: inline-block;\n'
+      + '}\n'
+      + '.test,\n'
+      + '.test {\n'
+      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '}\n'
+      + '.test2,\n'
+      + '.test2 {\n'
+      + '  background-image: url("' + HI_REZ_DATA + '");\n'
+      + '}\n',
 
-exports['multiple-combine'] = function(beforeExit, assert) {
-  runTest(
-      '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '  display inline-block\n'
-    + '.test\n'
-    + '  background-image url("images/barrowLoRez.png")\n'
-    + '.test2\n'
-    + '  background-image url("images/barrowLoRez@2x.png")\n'
-    + '  display inline-block\n'
-    + '.test2\n'
-    + '  background-image url("images/barrowLoRez@2x.png")\n',
-
-      '.test {\n'
-    + '  display: inline-block;\n'
-    + '}\n'
-    + '.test2 {\n'
-    + '  display: inline-block;\n'
-    + '}\n'
-    + '.test,\n'
-    + '.test {\n'
-    + '  background-image: url("' + LO_REZ_DATA + '");\n'
-    + '}\n'
-    + '.test2,\n'
-    + '.test2 {\n'
-    + '  background-image: url("' + HI_REZ_DATA + '");\n'
-    + '}\n',
-
-    "Multiple combine Matches",
-    assert);
-};
-
-exports['external-prefix'] = function(beforeExit, assert) {
-  runTest(
-      '.test1\n'
-    + '  background-image url("foo.png")\n'
-    + '.test2\n'
-    + '  background-image url("/foo.png")\n'
-    + '.test3\n'
-    + '  background-image url("//test/foo.png")\n'
-    + '.test4\n'
-    + '  background-image url("http://test/foo.png")\n',
-
-      '.test1 {\n'
-    + '  background-image: url("/prefix/foo.png");\n'
-    + '}\n'
-    + '.test2 {\n'
-    + '  background-image: url("/foo.png");\n'
-    + '}\n'
-    + '.test3 {\n'
-    + '  background-image: url("//test/foo.png");\n'
-    + '}\n'
-    + '.test4 {\n'
-    + '  background-image: url("http://test/foo.png");\n'
-    + '}\n',
-
-    "Load Prefix output",
-    assert, {
-      externalPrefix: '/prefix/'
-    });
-};
+      done);
+  });
+});

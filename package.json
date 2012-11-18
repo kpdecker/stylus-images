@@ -19,9 +19,11 @@
   },
   "dependencies": {},
   "scripts": {
-    "test": "expresso test/*"
+    "test": "node_modules/.bin/mocha test/*.js"
   },
   "devDependencies": {
-    "stylus": "~0.24"
+    "mocha": "~1.5",
+    "should": "*",
+    "stylus": ">=0.24"
   }
 }

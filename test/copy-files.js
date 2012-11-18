@@ -1,6 +1,7 @@
 var fs = require('fs'),
     stylus = require('stylus'),
-    stylusImage = require('..');
+    stylusImage = require('..'),
+    wrench = require('wrench');
 
 function runTest(test, expected, imagePath, options, done) {
   stylus(test, options)
@@ -21,7 +22,12 @@ function runTest(test, expected, imagePath, options, done) {
 }
 
 describe('copy file', function() {
-  fs.mkdir('/tmp/stylus-images', parseInt('0777', 8));
+  before(function() {
+    fs.mkdir('/tmp/stylus-images', parseInt('0777', 8));
+  });
+  after(function() {
+    wrench.rmdirSyncRecursive('/tmp/stylus-images');
+  });
 
   it('copy large files', function(done) {
     runTest(

@@ -22,7 +22,7 @@
     "test": "node_modules/.bin/mocha test/*.js"
   },
   "devDependencies": {
-    "mocha": "~1.5",
+    "mocha": "~1.7",
     "should": "*",
     "stylus": ">=0.24"
   }

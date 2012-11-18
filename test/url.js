@@ -3,7 +3,7 @@ var stylus = require('stylus'),
 
 function runTest(test, expected, done, options) {
   stylus(test)
-    .use(stylusImage(options))
+    .use(stylusImage.plugin(options))
     .include(process.cwd() + '/test')
     .render(function(err, css) {
       // Timeout to prevent multiple errors in response to catch resend

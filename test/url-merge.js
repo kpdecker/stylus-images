@@ -4,7 +4,7 @@ var lib = require('./lib'),
 
 function runTest(test, expected, done) {
   stylus(test)
-    .use(stylusImage({}))
+    .use(stylusImage.plugin({}))
     .include(process.cwd() + '/test')
     .render(function(err, css) {
       // Timeout to prevent multiple errors in response to catch resend

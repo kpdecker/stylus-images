@@ -4,7 +4,7 @@ var fs = require('fs'),
 
 function runTest(test, expected, imagePath, options, done) {
   stylus(test, options)
-    .use(stylusImage(options))
+    .use(stylusImage.plugin(options))
     .include(process.cwd() + '/test')
     .render(function(err, css) {
       // Timeout to prevent multiple errors in response to catch resend

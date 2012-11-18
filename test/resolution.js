@@ -1,16 +1,6 @@
-var stylus = require('stylus'),
+var lib = require('./lib'),
+    stylus = require('stylus'),
     stylusImage = require('..');
-
-const LO_REZ_DATA = 'data:image/png;base64,'
-      + 'iVBORw0KGgoAAAANSUhEUgAAAA4AAAAJAQMAAAA4g48'
-      + 'qAAAABlBMVEUAAABsbGxp5oJTAAAAAXRSTlMAQObYZg'
-      + 'AAACNJREFUCB1jUBBgKLBgqKhgqPnBYP+BQf4BA/8BB'
-      + 'vYGBmYGAF9nBsTug883AAAAAElFTkSuQmCC';
-const HI_REZ_DATA = 'data:image/png;base64,'
-      + 'iVBORw0KGgoAAAANSUhEUgAAACcAAAAwAgMAAADvHou'
-      + 'FAAAADFBMVEUAAADu7u7l5uWztLMXvUdxAAAAAXRSTl'
-      + 'MAQObYZgAAABRJREFUKFNjuMAAB6NMDOaDkcYEAJiHK'
-      + 'GF+9t31AAAAAElFTkSuQmCC';
 
 function runTest(test, expected, options, done) {
   stylus(test)
@@ -37,7 +27,7 @@ describe('resolution selector', function() {
       + '  display inline-block\n',
 
         '.test {\n'
-      + '  background-image: url("' + LO_REZ_DATA + '");\n'
+      + '  background-image: url("' + lib.LO_REZ_DATA + '");\n'
       + '  display: inline-block;\n'
       + '}\n',
 
@@ -51,7 +41,7 @@ describe('resolution selector', function() {
       + '  display inline-block\n',
 
         '.test {\n'
-      + '  background-image: url("' + HI_REZ_DATA + '");\n'
+      + '  background-image: url("' + lib.HI_REZ_DATA + '");\n'
       + '  display: inline-block;\n'
       + '}\n',
 

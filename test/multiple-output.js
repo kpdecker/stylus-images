@@ -75,7 +75,34 @@ describe('multiple ouput', function() {
         done();
       });
   });
-  it.skip('should merge files for each resolution', function(done) {
-    // TODO : Setup a case where one resolution should merge the the other should not
+  it('should merge files for each resolution', function(done) {
+    runTest(
+        '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  display inline-block\n'
+      + '.test\n'
+      + '  background-image url("images/barrowLoRez.png")\n',
+
+      {images: {resolutions: [0.5, 1, 2, 3]}},
+
+      function(data) {
+        function expected(density) {
+          return '.test {\n'
+              + '  display: inline-block;\n'
+              + '}\n'
+              + '.test,\n'
+              + '.test {\n'
+              + '  background-image: url("' + (density >= 2 ? lib.HI_REZ_DATA : lib.LO_REZ_DATA) + '");\n'
+              + '}\n';
+        }
+        data.should.eql({
+          '0.5': expected(0.5),
+          '1': expected(1),
+          '2': expected(2),
+          '3': expected(3)
+        });
+
+        done();
+      });
   });
 });

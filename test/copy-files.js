@@ -1,3 +1,4 @@
+/*jshint maxparams: 5*/
 var fs = require('fs'),
     stylus = require('stylus'),
     stylusImage = require('..'),

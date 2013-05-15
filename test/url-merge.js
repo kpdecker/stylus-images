@@ -100,6 +100,35 @@ describe('url-merge', function() {
       done);
   });
 
+  it('should merge nested rules', function(done) {
+    runTest(
+        '.test1\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  .test2\n'
+      + '    background-image url("images/barrowLoRez.png")\n',
+
+        '.test1,\n'
+      + '.test1 .test2 {\n'
+      + '  background-image: url("' + lib.LO_REZ_DATA + '");\n'
+      + '}\n',
+
+      done);
+  });
+  it('should merge & rules', function(done) {
+    runTest(
+        '.test1\n'
+      + '  background-image url("images/barrowLoRez.png")\n'
+      + '  &.test2\n'
+      + '    background-image url("images/barrowLoRez.png")\n',
+
+        '.test1,\n'
+      + '.test1.test2 {\n'
+      + '  background-image: url("' + lib.LO_REZ_DATA + '");\n'
+      + '}\n',
+
+      done);
+  });
+
   it('should not merge external urls', function(done) {
     runTest(
         '.test1\n'

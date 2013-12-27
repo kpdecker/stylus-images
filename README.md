@@ -35,3 +35,7 @@ New implementations should use the stylus-image object in place of direct stylus
     writeFile('css@2x.css', data['2']);
   });
 ```
+
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/kpdecker/stylus-images/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+

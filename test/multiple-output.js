@@ -90,7 +90,6 @@ describe('multiple ouput', function() {
           return '.test {\n'
               + '  display: inline-block;\n'
               + '}\n'
-              + '.test,\n'
               + '.test {\n'
               + '  background-image: url("' + (density >= 2 ? lib.HI_REZ_DATA : lib.LO_REZ_DATA) + '");\n'
               + '}\n';

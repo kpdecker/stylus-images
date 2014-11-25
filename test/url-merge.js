@@ -31,7 +31,6 @@ describe('url-merge', function() {
         '.test {\n'
       + '  display: inline-block;\n'
       + '}\n'
-      + '.test,\n'
       + '.test {\n'
       + '  background-image: url("' + lib.LO_REZ_DATA + '");\n'
       + '}\n',
@@ -165,11 +164,9 @@ describe('url-merge', function() {
       + '.test2 {\n'
       + '  display: inline-block;\n'
       + '}\n'
-      + '.test,\n'
       + '.test {\n'
       + '  background-image: url("' + lib.LO_REZ_DATA + '");\n'
       + '}\n'
-      + '.test2,\n'
       + '.test2 {\n'
       + '  background-image: url("' + lib.HI_REZ_DATA + '");\n'
       + '}\n',
